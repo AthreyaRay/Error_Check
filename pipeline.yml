@@ -1,0 +1,17 @@
+steps:
+- label: ":white_check_mark: Successful Step"
+  command: "echo 'This step will pass successfully'"
+
+- label: ":x: Command Failure Only (Logic)"
+  command: "exit 2"
+
+- label: ":warning: Soft Fail (Does Not Block Pipeline)"
+  command: "exit 5"
+  soft_fail: true
+
+- label: ":arrow_right: Continue on Failure (Does Not Block)"
+  command: "exit 6"
+  continue_on_failure: true
+
+- label: ":rocket: Final Step (Always Runs)"
+  command: "echo 'Pipeline has completed!'"

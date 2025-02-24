@@ -7,6 +7,7 @@ steps:
 
 - label: ":warning: Soft Fail (Does Not Block Pipeline)"
   command: "exit 5"
+  soft_fail: true
 
 - label: ":rocket: Final Step (Always Runs)"
   command: "echo 'Pipeline has completed!'"

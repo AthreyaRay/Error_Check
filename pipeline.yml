@@ -9,9 +9,5 @@ steps:
   command: "exit 5"
   soft_fail: true
 
-- label: ":arrow_right: Continue on Failure (Does Not Block)"
-  command: "exit 6"
-  continue_on_failure: true
-
 - label: ":rocket: Final Step (Always Runs)"
   command: "echo 'Pipeline has completed!'"

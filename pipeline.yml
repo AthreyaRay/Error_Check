@@ -19,15 +19,18 @@ steps:
   plugins:
   - docker#v5.12.0:
       image: "ubuntu:latest"
-      # Force a low memory limit so we can exceed it
-      memory: "256m"
-      memory_swap: "256m"
+      memory: "256m" # Limit memory to 256MB
+      memory_swap: "256m" # Prevent extra swap usage
+      mount-buildkite-agent: false # Prevents Job API socket mount issues
   command: |
-    # Install a small utility called `stress` to consume memory
+    echo "Disabling Buildkite Job API socket"
+    export BUILDKITE_AGENT_JOB_API_SOCKET=/tmp/job-api.sock  # Override problematic socket path
+
+    echo "Installing stress tool..."
     apt-get update && apt-get install -y stress
 
     echo "Attempting to consume more memory than allowed..."
-    # This tries to allocate 512 MB, which should exceed the 256 MB limit
+    # This will exceed the 256MB limit and cause an OOM kill
     stress --vm 1 --vm-bytes 512M --timeout 10s
 
-    echo "Finished stress command"
+    echo "Finished stress command (if this runs, OOM didn't trigger)"

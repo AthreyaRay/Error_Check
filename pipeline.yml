@@ -1,16 +1,33 @@
-agents:
-  queue: kubernetes
+# agents:
+#   queue: kubernetes
 
+# steps:
+# - label: ":white_check_mark: Successful Step"
+#   command: "echo 'This step will pass successfully'"
+
+# - label: ":x: Command Failure Only (Logic)"
+#   command: "exit 2"
+
+# - label: ":warning: Soft Fail (Does Not Block Pipeline)"
+#   command: "exit 5"
+#   soft_fail: true
+
+# - label: ":rocket: Final Step (Always Runs)"
+#   command: "echo 'Pipeline has completed!'"
 steps:
-- label: ":white_check_mark: Successful Step"
-  command: "echo 'This step will pass successfully'"
+- label: "Trigger Docker OOM"
+  plugins:
+  - docker#v5.12.0:
+      image: "ubuntu:latest"
+      # Force a low memory limit so we can exceed it
+      memory: "256m"
+      memory_swap: "256m"
+  command: |
+    # Install a small utility called `stress` to consume memory
+    apt-get update && apt-get install -y stress
 
-- label: ":x: Command Failure Only (Logic)"
-  command: "exit 2"
+    echo "Attempting to consume more memory than allowed..."
+    # This tries to allocate 512 MB, which should exceed the 256 MB limit
+    stress --vm 1 --vm-bytes 512M --timeout 10s
 
-- label: ":warning: Soft Fail (Does Not Block Pipeline)"
-  command: "exit 5"
-  soft_fail: true
-
-- label: ":rocket: Final Step (Always Runs)"
-  command: "echo 'Pipeline has completed!'"
+    echo "Finished stress command"

@@ -1,36 +1,19 @@
 # agents:
 #   queue: kubernetes
 
-# steps:
-# - label: ":white_check_mark: Successful Step"
-#   command: "echo 'This step will pass successfully'"
-
-# - label: ":x: Command Failure Only (Logic)"
-#   command: "exit 2"
-
-# - label: ":warning: Soft Fail (Does Not Block Pipeline)"
-#   command: "exit 5"
-#   soft_fail: true
-
-# - label: ":rocket: Final Step (Always Runs)"
-#   command: "echo 'Pipeline has completed!'"
 steps:
-- label: "Trigger Guaranteed Docker OOM"
-  plugins:
-  - docker#v5.12.0:
-      image: "ubuntu:latest"
-      memory: "128m" # Reduce memory further to force OOM faster
-      memory_swap: "128m" # Prevent swap from saving the process
-      mount-buildkite-agent: false # Prevents Job API socket mount issues
-  command: |
-    echo "Disabling Buildkite Job API socket"
-    export BUILDKITE_AGENT_JOB_API_SOCKET=/tmp/job-api.sock  # Redirect job API socket to /tmp
+- label: ":white_check_mark: Successful Step"
+  command: "echo 'This step will pass successfully'"
 
-    echo "Installing stress tool..."
-    apt-get update && apt-get install -y stress
+- label: ":x: Command Failure Only (Logic)"
+  command: echo "exit 2"
 
-    echo "Forcing an OOM kill..."
-    # We use 2 stress processes instead of 1 to force an immediate OOM
-    stress --vm 2 --vm-bytes 256M --timeout 20s || echo "Process exited unexpectedly"
+- label: ":warning: Soft Fail (Does Not Block Pipeline)"
+  command: echo "exit 5"
+  soft_fail: true
 
-    echo "This message should never print, OOM should have killed the container!"
+- label: ":bookmark: Set Release Version Metadata"
+  command: "buildkite-agent meta-data set 'release-version' '1.0.0'"
+
+- label: ":rocket: Final Step (Always Runs)"
+  command: "echo 'Pipeline has completed!'"

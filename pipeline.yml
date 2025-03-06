@@ -15,5 +15,8 @@ steps:
 - label: ":bookmark: Set Release Version Metadata"
   command: "buildkite-agent meta-data set 'release-version' '1.0.0'"
 
+- label: ":mag: Get and Print Release Version Metadata"
+  command: "echo 'Release Version: $(buildkite-agent meta-data get release-version)'"
+
 - label: ":rocket: Final Step (Always Runs)"
   command: "echo 'Pipeline has completed!'"

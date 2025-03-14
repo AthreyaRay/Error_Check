@@ -1,17 +1,44 @@
 # agents:
 #   queue: kubernetes
 
+# steps:
+# - label: ":white_check_mark: Successful Step"
+#   command: "echo 'This step will pass successfully'"
+
+# - label: ":x: Command Failure Only (Logic)"
+#   command: echo "exit 2" && sleep 30
+#   retry:
+#     automatic: true
+
+# - label: ":warning: Soft Fail (Does Not Block Pipeline)"
+#   command: echo "exit 5"
+#   soft_fail: true
+
+# - label: ":bookmark: Set Release Version Metadata"
+#   command: buildkite-agent meta-data set "release-version" "1.0.0"
+
+# - label: ":mag: Get and Print Release Version Metadata"
+#   command: buildkite-agent meta-data get "release-version"
+
+# - label: ":rocket: Final Step (Always Runs)"
+#   command: "echo 'Pipeline has completed!'"
+
 steps:
 - label: ":white_check_mark: Successful Step"
   command: "echo 'This step will pass successfully'"
 
 - label: ":x: Command Failure Only (Logic)"
-  command: echo "exit 2" && sleep 30
+  command: |
+    echo "Simulating failure with exit code 255"
+    exit 255
   retry:
-    automatic: true
+    automatic:
+    - exit_status: 255
 
 - label: ":warning: Soft Fail (Does Not Block Pipeline)"
-  command: echo "exit 5"
+  command: |
+    echo "Simulating soft failure with exit code 5"
+    exit 5
   soft_fail: true
 
 - label: ":bookmark: Set Release Version Metadata"

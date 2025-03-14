@@ -6,7 +6,7 @@ steps:
   command: "echo 'This step will pass successfully'"
 
 - label: ":x: Command Failure Only (Logic)"
-  command: echo "exit 2"
+  command: echo "exit 2" && sleep 30
 
 - label: ":warning: Soft Fail (Does Not Block Pipeline)"
   command: echo "exit 5"

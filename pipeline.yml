@@ -23,31 +23,37 @@
 # - label: ":rocket: Final Step (Always Runs)"
 #   command: "echo 'Pipeline has completed!'"
 
+# steps:
+# - label: ":white_check_mark: Successful Step"
+#   command: "echo 'This step will pass successfully'"
+
+# - label: ":x: Command Failure Only (Logic)"
+#   command: |
+#     echo "Simulating failure with exit code 255"
+#     sleep 90
+#   key: 'scheduled'
+#   retry:
+#     automatic:
+#     - exit_status: 255
+
+# - label: ":warning: Soft Fail (Does Not Block Pipeline)"
+#   command: |
+#     echo "Simulating soft failure with exit code 5"
+#     exit 5
+#   soft_fail: true
+#   depends_on: 'scheduled'
+
+# - label: ":bookmark: Set Release Version Metadata"
+#   command: buildkite-agent meta-data set "release-version" "1.0.0"
+
+# - label: ":mag: Get and Print Release Version Metadata"
+#   command: buildkite-agent meta-data get "release-version"
+
+# - label: ":rocket: Final Step (Always Runs)"
+#   command: "echo 'Pipeline has completed!'"
+
 steps:
-- label: ":white_check_mark: Successful Step"
-  command: "echo 'This step will pass successfully'"
-
-- label: ":x: Command Failure Only (Logic)"
-  command: |
-    echo "Simulating failure with exit code 255"
-    sleep 90
-  key: 'scheduled'
-  retry:
-    automatic:
-    - exit_status: 255
-
-- label: ":warning: Soft Fail (Does Not Block Pipeline)"
-  command: |
-    echo "Simulating soft failure with exit code 5"
-    exit 5
-  soft_fail: true
-  depends_on: 'scheduled'
-
-- label: ":bookmark: Set Release Version Metadata"
-  command: buildkite-agent meta-data set "release-version" "1.0.0"
-
-- label: ":mag: Get and Print Release Version Metadata"
-  command: buildkite-agent meta-data get "release-version"
-
-- label: ":rocket: Final Step (Always Runs)"
-  command: "echo 'Pipeline has completed!'"
+- label: "Helping Jerrid"
+  plugins:
+  - docker-compose#v4.12.0:
+      run: app

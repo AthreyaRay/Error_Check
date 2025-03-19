@@ -56,4 +56,6 @@ steps:
 - label: "Helping Jerrid"
   plugins:
   - docker-compose:
+      args:
+      - "MY_CUSTOM_ARG=panda"
       run: app

@@ -30,7 +30,8 @@ steps:
 - label: ":x: Command Failure Only (Logic)"
   command: |
     echo "Simulating failure with exit code 255"
-    sleep 30
+    sleep 90
+  key: 'scheduled'
   retry:
     automatic:
     - exit_status: 255
@@ -40,6 +41,7 @@ steps:
     echo "Simulating soft failure with exit code 5"
     exit 5
   soft_fail: true
+  depends_on: 'scheduled'
 
 - label: ":bookmark: Set Release Version Metadata"
   command: buildkite-agent meta-data set "release-version" "1.0.0"

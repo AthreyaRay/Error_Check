@@ -6,7 +6,7 @@ steps:
   command: "echo 'This step will pass successfully'"
   plugins:
   - AthreyaRay/last-successful-commits:
-      fallback-commit-count: 10
+      fallback-commit-count: 2
       show-annotation: true
 
 - label: ":x: Command Failure Only (Logic)"

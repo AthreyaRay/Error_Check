@@ -5,7 +5,7 @@ steps:
 - label: ":white_check_mark: Successful Step"
   command: "echo 'This step will pass successfully'"
   plugins:
-  - AthreyaRay/last-successful-commits:
+  - AthreyaRay/last-successful-commits#v1.1.0:
       fallback-commit-count: 2
       show-annotation: true
 

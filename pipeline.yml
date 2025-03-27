@@ -5,27 +5,28 @@ steps:
 - label: ":white_check_mark: Successful Step"
   command: "echo 'This step will pass successfully'"
   plugins:
-  - AthreyaRay/last-successful-commits#v1.1.1:
-      fallback-commit-count: 2
-      show-annotation: true
+  - AthreyaRay/last-successful-commits#v2.0.0:
+      organization: "personal-use-4"
+      pipeline: "error-check"
+      branch: main
 
-- label: ":x: Command Failure Only (Logic)"
-  command: echo "exit 2" && sleep 30
-  retry:
-    automatic: true
+# - label: ":x: Command Failure Only (Logic)"
+#   command: echo "exit 2" && sleep 30
+#   retry:
+#     automatic: true
 
-- label: ":warning: Soft Fail (Does Not Block Pipeline)"
-  command: echo "exit 5"
-  soft_fail: true
+# - label: ":warning: Soft Fail (Does Not Block Pipeline)"
+#   command: echo "exit 5"
+#   soft_fail: true
 
-- label: ":bookmark: Set Release Version Metadata"
-  command: buildkite-agent meta-data set "release-version" "1.0.0"
+# - label: ":bookmark: Set Release Version Metadata"
+#   command: buildkite-agent meta-data set "release-version" "1.0.0"
 
-- label: ":mag: Get and Print Release Version Metadata"
-  command: buildkite-agent meta-data get "release-version"
+# - label: ":mag: Get and Print Release Version Metadata"
+#   command: buildkite-agent meta-data get "release-version"
 
-- label: ":rocket: Final Step (Always Runs)"
-  command: "echo 'Pipeline has completed!'"
+# - label: ":rocket: Final Step (Always Runs)"
+#   command: "echo 'Pipeline has completed!'"
 
 # steps:
 # - label: ":white_check_mark: Successful Step"

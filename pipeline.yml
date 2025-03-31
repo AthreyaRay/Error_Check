@@ -9,7 +9,6 @@ steps:
       organization: "personal-use-4"
       pipeline: "error-check"
       branch: "main"
-      state: "PASSED"
 
 # - label: ":x: Command Failure Only (Logic)"
 #   command: echo "exit 2" && sleep 30

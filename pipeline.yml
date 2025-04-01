@@ -8,7 +8,7 @@ steps:
   - AthreyaRay/last-successful-commits#v2.3.3:
       organization: "personal-use-4"
       pipeline: "error-check"
-      branch: "main"
+      branch: "HEAD"
       detailed: true
 
 # - label: ":x: Command Failure Only (Logic)"

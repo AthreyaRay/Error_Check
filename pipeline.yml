@@ -8,8 +8,9 @@ steps:
   - AthreyaRay/last-successful-commits#v2.3.3:
       organization: "personal-use-4"
       pipeline: "error-check"
-      branch: "HEAD"
       detailed: true
+      from_commit: 2b8c9f16ab
+      to_commit: 9a9a05c1c
 
 # - label: ":x: Command Failure Only (Logic)"
 #   command: echo "exit 2" && sleep 30

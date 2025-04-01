@@ -9,8 +9,6 @@ steps:
       organization: "personal-use-4"
       pipeline: "error-check"
       detailed: true
-      from_commit: 2b8c9f16ab
-      to_commit: 9a9a05c1c
 
 # - label: ":x: Command Failure Only (Logic)"
 #   command: echo "exit 2" && sleep 30

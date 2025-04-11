@@ -114,5 +114,5 @@ notify:
     - "#slack_notification_test"
     message: |
       📦 Artifact uploaded and downloaded!
-      $buildkite-agent artifact search "*.apk" --format "%u")|Download the .apk file>
+      $(buildkite-agent artifact search "*.apk" --format "%u")|Download the .apk file>
       ✅ Build: ${BUILDKITE_BUILD_URL}

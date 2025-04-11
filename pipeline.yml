@@ -100,7 +100,7 @@ steps:
   command: |
     echo "--- Searching for .apk artifact URL..."
     ARTIFACT_URL=$(buildkite-agent artifact search "*.apk" --format "%u")
-    echo "Artifact URL: $ARTIFACT_URL"
+    echo "Artifact URL: $$ARTIFACT_URL"
 
     echo "--- Downloading artifact..."
     buildkite-agent artifact download "*.apk" .
@@ -112,4 +112,4 @@ notify:
 - slack:
     channels:
     - "#slack_notification_test"
-    message: "Check the <https://example.com|build report> for details."
+    message: "Check the <$$ARTIFACT_URL|build report> for details."

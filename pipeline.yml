@@ -107,10 +107,10 @@ steps:
 
     echo "--- Persisting environment for notify block..."
     echo "export ARTIFACT_URL=$$ARTIFACT_URL" >> "$BUILDKITE_ENV_FILE"
-    buildkite-agent meta-data set "artifact-url" "$$ARTIFACT_URL"
+    buildkite-agent meta-data set "artifact" "$$ARTIFACT_URL"
 
 notify:
 - slack:
     channels:
     - "#slack_notification_test"
-    message: buildkite-agent meta-data get "artifact-url"
+    message: buildkite-agent meta-data get "artifact"

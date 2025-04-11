@@ -155,7 +155,7 @@ steps:
           - slack:
               channels: 
                 - "#slack_notification_test"
-              message: "Your artifact is ready: <${ARTIFACT_URL}|Click here>"
+              message: "Your artifact is ready: <$${ARTIFACT_URL}|Click here>"
         env:
           ARTIFACT_URL: "$ARTIFACT_URL"
     EOF

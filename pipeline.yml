@@ -106,7 +106,7 @@ steps:
     buildkite-agent artifact download "*.apk" .
 
     echo "--- Persisting environment for notify block..."
-    echo "export ARTIFACT_URL=$ARTIFACT_URL" >> "$BUILDKITE_ENV_FILE"
+    echo "export ARTIFACT_URL=$$ARTIFACT_URL" >> "$BUILDKITE_ENV_FILE"
 
   notify:
   - slack:
@@ -114,5 +114,5 @@ steps:
       - "#slack_notification_test"
       message: |
         📦 Artifact uploaded and downloaded!
-        🔗 <${ARTIFACT_URL}|Download the .apk file>
+        🔗 $${ARTIFACT_URL}|Download the .apk file>
         ✅ Build: ${BUILDKITE_BUILD_URL}

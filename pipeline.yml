@@ -106,7 +106,7 @@ steps:
     buildkite-agent artifact download "*.apk" .
 
     echo "--- Setting Buildkite metadata..."
-    buildkite-agent meta-data set "artifact-url" "$ARTIFACT_URL"
+    buildkite-agent meta-data set "artifact-url" "$$ARTIFACT_URL"
 
 notify:
 - slack:

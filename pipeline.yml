@@ -1,13 +1,13 @@
 # agents:
 #   queue: kubernetes
 
-steps:
-- label: ":white_check_mark: Successful Step"
-  command: "echo 'This step will pass successfully'"
-  plugins:
-  - AthreyaRay/last-successful-commits#v2.3.4:
-      organization: "personal-use-4"
-      pipeline: "error-check"
+# steps:
+# - label: ":white_check_mark: Successful Step"
+#   command: "echo 'This step will pass successfully'"
+#   plugins:
+#   - AthreyaRay/last-successful-commits#v2.3.4:
+#       organization: "personal-use-4"
+#       pipeline: "error-check"
 
 # - label: ":x: Command Failure Only (Logic)"
 #   command: echo "exit 2" && sleep 30
@@ -86,3 +86,33 @@ steps:
 #     EOF
 # - label: "Final Step"
 #   command: "echo 'Final step running'"
+
+steps:
+- label: "🛠️ Create and Upload Artifact"
+  key: "upload"
+  command: |
+    echo "This is a test .apk artifact" > test-artifact.apk
+    echo "--- Uploading artifact..."
+    buildkite-agent artifact upload "test-artifact.apk"
+
+- label: "🔍 Search, Download & Send to Slack"
+  depends_on: "upload"
+  command: |
+    echo "--- Searching for .apk artifact URL..."
+    ARTIFACT_URL=$(buildkite-agent artifact search "*.apk" --format "%u")
+    echo "Artifact URL: $ARTIFACT_URL"
+
+    echo "--- Downloading artifact..."
+    buildkite-agent artifact download "*.apk" .
+
+    echo "--- Persisting environment for notify block..."
+    echo "export ARTIFACT_URL=$ARTIFACT_URL" >> "$BUILDKITE_ENV_FILE"
+
+  notify:
+  - slack:
+      channels:
+      - "#slack_notification_test"
+      message: |
+        📦 Artifact uploaded and downloaded!
+        🔗 <${ARTIFACT_URL}|Download the .apk file>
+        ✅ Build: ${BUILDKITE_BUILD_URL}

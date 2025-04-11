@@ -108,11 +108,11 @@ steps:
     echo "--- Persisting environment for notify block..."
     echo "export ARTIFACT_URL=$$ARTIFACT_URL" >> "$BUILDKITE_ENV_FILE"
 
-  notify:
-  - slack:
-      channels:
-      - "#slack_notification_test"
-      message: |
-        📦 Artifact uploaded and downloaded!
-        🔗 $${ARTIFACT_URL}|Download the .apk file>
-        ✅ Build: ${BUILDKITE_BUILD_URL}
+notify:
+- slack:
+    channels:
+    - "#slack_notification_test"
+    message: |
+      📦 Artifact uploaded and downloaded!
+      ${ARTIFACT_URL}|Download the .apk file>
+      ✅ Build: ${BUILDKITE_BUILD_URL}

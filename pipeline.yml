@@ -144,7 +144,7 @@ steps:
     buildkite-agent artifact download "*.apk" .
 
     echo "--- Setting Buildkite metadata..."
-    buildkite-agent meta-data set "artifact-url" "$ARTIFACT_URL"
+    buildkite-agent meta-data set "artifact-url" "$$ARTIFACT_URL"
 
     echo "--- Uploading Slack notification step..."
     cat <<EOF | buildkite-agent pipeline upload

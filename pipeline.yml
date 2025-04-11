@@ -87,29 +87,76 @@
 # - label: "Final Step"
 #   command: "echo 'Final step running'"
 
+# steps:
+# - label: "🛠️ Create and Upload Artifact"
+#   key: "upload"
+#   command: |
+#     echo "This is a test .apk artifact" > test-artifact.apk
+#     echo "--- Uploading artifact..."
+#     buildkite-agent artifact upload "test-artifact.apk"
+
+# - label: "🔍 Search, Download & Send to Slack"
+#   depends_on: "upload"
+#   command: |
+#     echo "--- Searching for .apk artifact URL..."
+#     ARTIFACT_URL=$(buildkite-agent artifact search "*.apk" --format "%u")
+#     echo "Artifact URL: $$ARTIFACT_URL"
+#   env:
+
+
+#     echo "--- Downloading artifact..."
+#     buildkite-agent artifact download "*.apk" .
+
+#     echo "--- Setting Buildkite metadata..."
+#     buildkite-agent meta-data set "artifact-url" "$$ARTIFACT_URL"
+
+#     cat <<EOF | buildkite-agent pipeline upload
+#   steps:
+#     - label: ":slack: Notify"
+#       command: echo "Sending Slack notification..."
+#       notify:
+#         - slack:
+#             channels: "#slack_notification_test"
+#             message: "Your artifact is ready: <$${ARTIFACT_URL}|Click here>"
+#       EOF
+
+# notify:
+# - slack:
+#     channels:
+#     - "#slack_notification_test"
+#     message: "Here's your artifact: <$$(buildkite-agent meta-data get artifact-url)|link>"
+
+
 steps:
-- label: "🛠️ Create and Upload Artifact"
-  key: "upload"
-  command: |
-    echo "This is a test .apk artifact" > test-artifact.apk
-    echo "--- Uploading artifact..."
-    buildkite-agent artifact upload "test-artifact.apk"
+  - label: "🛠️ Create and Upload Artifact"
+    key: "upload"
+    command: |
+      echo "This is a test .apk artifact" > test-artifact.apk
+      echo "--- Uploading artifact..."
+      buildkite-agent artifact upload "test-artifact.apk"
 
-- label: "🔍 Search, Download & Send to Slack"
-  depends_on: "upload"
-  command: |
-    echo "--- Searching for .apk artifact URL..."
-    ARTIFACT_URL=$(buildkite-agent artifact search "*.apk" --format "%u")
-    echo "Artifact URL: $$ARTIFACT_URL"
+  - label: "🔍 Search, Download & Send to Slack"
+    depends_on: "upload"
+    command: |
+      echo "--- Searching for .apk artifact URL..."
+      ARTIFACT_URL=$(buildkite-agent artifact search "*.apk" --format "%u")
+      echo "Artifact URL: $ARTIFACT_URL"
 
-    echo "--- Downloading artifact..."
-    buildkite-agent artifact download "*.apk" .
+      echo "--- Downloading artifact..."
+      buildkite-agent artifact download "*.apk" .
 
-    echo "--- Setting Buildkite metadata..."
-    buildkite-agent meta-data set "artifact-url" "$$ARTIFACT_URL"
+      echo "--- Setting Buildkite metadata..."
+      buildkite-agent meta-data set "artifact-url" "$ARTIFACT_URL"
 
-notify:
-- slack:
-    channels:
-    - "#slack_notification_test"
-    message: "Here's your artifact: <$(buildkite-agent meta-data get artifact-url)|link>"
+      echo "--- Uploading Slack notification step..."
+      cat <<EOF | buildkite-agent pipeline upload
+steps:
+  - label: ":slack: Notify"
+    command: echo "Sending Slack notification..."
+    notify:
+      - slack:
+          channels: "#slack_notification_test"
+          message: "Your artifact is ready: <${ARTIFACT_URL}|Click here>"
+    env:
+      ARTIFACT_URL: "$ARTIFACT_URL"
+EOF
